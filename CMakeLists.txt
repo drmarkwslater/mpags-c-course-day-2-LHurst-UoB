@@ -7,7 +7,14 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-add_executable(mpags-cipher mpags-cipher.cpp)
-
 set(CMAKE_CXX_FLAGS "-Wall -Wextra -Werror -Wfatal-errors -Wshadow -pedantic")
 
+add_executable(mpags-cipher
+	mpags-cipher.cpp
+	MPAGSCipher/TransformChar.cpp
+	MPAGSCipher/TransformChar.hpp
+)
+
+target_include_directories(mpags-cipher
+	PRIVATE MPAGSCipher
+)
