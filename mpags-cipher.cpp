@@ -1,5 +1,8 @@
 // Standard Library includes
 #include <iostream>
+#include <fstream>
+#include <istream>
+#include <ostream>
 #include <string>
 #include <vector>
 
@@ -49,32 +52,47 @@ int main(int argc, char* argv[])
 
   // Initialise variables for processing input text
   char inputChar {'x'};
-  std::string inputText {""};
+  std::string inputText {""}; // This will only be used if the input and output are both connected to stdin/stdout - otherwise we will write as we read
 
   // Read in user input from stdin/file
-  // Warn that input file option not yet implemented
-  if (!inputFile.empty()) {
-    std::cout << "[warning] input from file ('"
-              << inputFile
-              << "') not implemented yet, using stdin\n";
+  std::istream *input;
+  std::ifstream infile;
+
+  if ( inputFile.empty() )
+	input = &std::cin;
+  else {
+    infile.open(inputFile);
+	input = &infile;
   }
 
+  std::ostream *output;
+  std::ofstream outfile;
+  if ( outputFile.empty() )
+	output = &std::cout;
+  else {
+	outfile.open(outputFile);
+	output = &outfile;
+  }
+
+  if ( ! input->good() || ! output->good() ) {
+	std::cerr << "Problem with input or output file" << std::endl;
+	return 1;
+  }
   // Loop over each character from user input
   // (until Return then CTRL-D (EOF) pressed)
-  while(std::cin >> inputChar)
+  while(*input >> inputChar)
   {
-	inputText +=  transformChar(inputChar);
+	if ( inputFile.empty() && outputFile.empty() )
+		inputText +=  transformChar(inputChar);
+	else
+		*output << transformChar(inputChar); // Stream output if not reading/writing from stdin/out
   }
 
-  // Output the transliterated text
-  // Warn that output file option not yet implemented
-  if (!outputFile.empty()) {
-    std::cout << "[warning] output to file ('"
-              << outputFile
-              << "') not implemented yet, using stdout\n";
-  }
+  // Output the transliterated text to stdout if buffered because we were reading from stdin
+  if (inputFile.empty() && outputFile.empty())
+	*output << inputText;
 
-  std::cout << inputText << std::endl;
+  *output << std::endl; // Finish with a newline
 
   // No requirement to return from main, but we do so for clarity
   // and for consistency with other functions
