@@ -23,10 +23,7 @@ std::string runCaesarCipher (
 		} else {
 			pos -= key;
 		}
-		if ( pos > (int)alphabet.size() )
-			pos = pos % alphabet.size();
-		else if ( pos < 0 )
-			pos = alphabet.size() + pos; // +(-ve) == subtraction
+		pos = pos % alphabet.size();
 
 		// Determine the new character and add it to the output string
 		result += alphabet[pos];

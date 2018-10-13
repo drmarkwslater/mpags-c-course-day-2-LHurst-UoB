@@ -7,9 +7,4 @@ std::string runCaesarCipher (
 	const size_t key,
 	const bool encrypt );
 
-char runCaesarCipher (
-	const char input,
-	const size_t key,
-	const bool encrypt );
-
 #endif
