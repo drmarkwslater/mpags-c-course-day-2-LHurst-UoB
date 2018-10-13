@@ -62,6 +62,8 @@ int main(int argc, char* argv[])
 	std::string inputText {""}; // This will only be used if the input and output are both connected to stdin/stdout - otherwise we will write as we read
 
 	// Read in user input from stdin/file
+
+	// we'll cover better ways of doing this later than raw pointers (or tempates if you're feeling brave!) :)
 	std::istream *input;
 	std::ifstream infile;
 
